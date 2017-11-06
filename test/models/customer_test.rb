@@ -2,16 +2,26 @@ require "test_helper"
 
 describe Customer do
   let(:customer1) { customers(:one) }
-  let(:customer_new) { Customer.new}
+  # let(:customer_new) { Customer.new}
 
   describe "relationships" do
-    it "has movies" do
+    it "has rentals" do
       # TODO: later on add rentals and show that each customer1.rentals , everything that returns .must_be_kind_of Rental
+      customer1.must_respond_to :rentals
+    end
+
+    it "can have zero rentals" do
+      Rental.destroy_all
       customer1.must_respond_to :rentals
     end
 
     it "has movies" do
       # TODO: later on add rentals and show that each customer1.movies , everything that returns .must_be_kind_of Movie
+      customer1.must_respond_to :movies
+    end
+
+    it "can have zero movies" do
+      Movie.destroy_all
       customer1.must_respond_to :movies
     end
   end
@@ -48,5 +58,4 @@ describe Customer do
       customer1.wont_be :valid?
     end
   end
-
 end
