@@ -1,6 +1,13 @@
 require 'date'
 JSON.parse(File.read('db/seeds/customers.json')).each do |customer|
-  Customer.create!(customer)
+  this_customer.Customer.new
+  this_customer.name = customer["name"]
+  this_customer.registered_at = customer["registered_at"]
+  this_customer.address = customer["address"]
+  this_customer.city = customer["city"]
+  this_customer.state = customer["state"]
+  this_customer.postal_code = customer["postal_code"]
+  this_customer.phone = customer["phone"]
 end
 
 id = 1
