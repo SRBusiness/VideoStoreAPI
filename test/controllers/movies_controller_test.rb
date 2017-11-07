@@ -79,14 +79,59 @@ describe MoviesController do
       Movie.count.must_equal count+1
     end
 
-    it "does not create movie with bad params" do
+    it "does not create movie with no title" do
       params = {
+        overview: "awesome movie about awesome people",
         release_date: "2018-10-10",
         inventory: "5"
       }
       count = Movie.count
       post movies_path, params: params
       must_respond_with :bad_request
+      body = JSON.parse(response.body)
+      body["errors"]["title"].must_not_be nil
+      Movie.count.must_equal count
+    end
+
+    it "does not create movie with no overview" do
+      params = {
+        title: "awesome movie 1",
+        release_date: "2018-10-10",
+        inventory: "5"
+      }
+      count = Movie.count
+      post movies_path, params: params
+      must_respond_with :bad_request
+      body = JSON.parse(response.body)
+      body["errors"]["overview"].must_not_be nil
+      Movie.count.must_equal count
+    end
+
+    it "does not create movie with no release_date" do
+      params = {
+        title: "awesome movie 1",
+        overview: "awesome movie about awesome people",
+        inventory: "5"
+      }
+      count = Movie.count
+      post movies_path, params: params
+      must_respond_with :bad_request
+      body = JSON.parse(response.body)
+      body["errors"]["release_date"].must_not_be nil
+      Movie.count.must_equal count
+    end
+
+    it "does not create movie with no inventory" do
+      params = {
+        title: "awesome movie 1",
+        overview: "awesome movie about awesome people",
+        release_date: "2018-10-10"
+      }
+      count = Movie.count
+      post movies_path, params: params
+      must_respond_with :bad_request
+      body = JSON.parse(response.body)
+      body["errors"]["inventory"].must_not_be nil
       Movie.count.must_equal count
     end
   end
