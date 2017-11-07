@@ -29,7 +29,7 @@ class MoviesController < ApplicationController
     if movie.save
       render json: {id: movie.id}
     else
-      render json: {errors: movie.errors.messaes},
+      render json: {errors: movie.errors.messages},
         status: :bad_request
     end
   end
