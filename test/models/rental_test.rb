@@ -38,7 +38,7 @@ describe Rental do
       Rental.count.must_equal before + 1
     end
 
-    it "it require a movie" do
+    it "it requires a movie" do
       rental = Rental.new(customer: customer , due_date: date_one)
       result = rental.save
       result.must_equal false
