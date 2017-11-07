@@ -73,9 +73,10 @@ describe MoviesController do
         release_date: "2018-10-10",
         inventory: "5"
       }
-      
+      count = Movie.count
       post movies_path, params: params
       must_respond_with :ok
+      Movie.count.must_equal count+1
     end
 
     it "does not create movie with bad params" do
@@ -83,9 +84,10 @@ describe MoviesController do
         release_date: "2018-10-10",
         inventory: "5"
       }
-
+      count = Movie.count
       post movies_path, params: params
       must_respond_with :bad_request
+      Movie.count.must_equal count
     end
   end
 end
