@@ -66,10 +66,11 @@ describe Movie do
 
   describe "show" do
     it "gets a valid movie" do
+      id = Movie.first.id
       params = {
-        id: Movie.first.id
+        id: id
       }
-      get movie_path(params)
+      get movie_path, params: params
       must_respond_with :ok
     end
 
@@ -78,7 +79,7 @@ describe Movie do
       params = {
         id: id
       }
-      get movie_path(params)
+      get movie_path, params: params
       must_respond_with :not_found
     end
   end
