@@ -65,33 +65,6 @@ describe MoviesController do
     end
   end
 
-  describe "index" do
-    it "gets index" do
-      get movies_path
-      must_respond_with :ok
-    end
-  end
-
-  describe "show" do
-    it "gets a valid movie" do
-      id = Movie.first.id
-      params = {
-        id: id
-      }
-      get movie_path, params: params
-      must_respond_with :ok
-    end
-
-    it "throws error for valid movie id" do
-      id = Movie.last.id +1
-      params = {
-        id: id
-      }
-      get movie_path, params: params
-      must_respond_with :not_found
-    end
-  end
-
   describe "create" do
     it "creates a movie with valid params" do
       params = {
@@ -100,7 +73,7 @@ describe MoviesController do
         release_date: "2018-10-10",
         inventory: "5"
       }
-
+      
       post movies_path, params: params
       must_respond_with :ok
     end
@@ -111,7 +84,7 @@ describe MoviesController do
         inventory: "5"
       }
 
-      post movies_path, params: parmas
+      post movies_path, params: params
       must_respond_with :bad_request
     end
   end
