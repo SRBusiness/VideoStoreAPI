@@ -1,14 +1,6 @@
 require "test_helper"
 
 describe Movie do
-  let(:movie) { Movie.new }
-
-  it "must be valid" do
-    value(movie).must_be :valid?
-  end
-end
-
-describe Movie do
   describe "relations" do
     before do
       @movie1 = movies(:Jaws)
@@ -33,32 +25,35 @@ describe Movie do
       @movie1.must_respond_to :rentals
     end
 
+  end
+  describe 'validations' do
+    before do
+      @movie1 = Movie.new(title: 'new movie',  overview: 'something@email.com', release_date: '01/01/1970', inventory: 99)
+    end
 
-    describe 'validations' do
-      before do
-        @movie1 = Movie.new(title: 'new movie',  overview: 'something@email.com', release_date: '01/01/1970', inventory: 99)
-      end
+    it 'allows a new movie to be created' do
+      @movie1.save
+      @movie1.must_be :valid?
+    end
 
-      it 'allows a new movie to be created' do
-        @movie1.must_be :valid?
-      end
+    it 'must have a title' do
+      @movie1.title = nil
+      @movie1.wont_be :valid?
+    end
 
-      it 'must have a title' do
-        @movie1.title = nil
-        @movie1 wont_be :valid?
-      end
+    it 'must have a overview' do
+      @movie1.overview = nil
+      @movie1.wont_be :valid?
+    end
 
-      it 'must have a overview' do
-        @movie1.overview = nil
-        @movie1 wont_be :valid?
-      end
+    it 'must have a release_date' do
+      @movie1.release_date = nil
+      @movie1.wont_be :valid?
+    end
 
-      it 'must have a release_date' do
-        @movie1.release_date = nil
-        @movie1 wont_be :valid?
-      end
-
-      it 'must have a inventory' do
-        @movie1.inventory = nil
-        @movie1 wont_be :valid?
-      end
+    it 'must have a inventory' do
+      @movie1.inventory = nil
+      @movie1.wont_be :valid?
+    end
+  end
+end
