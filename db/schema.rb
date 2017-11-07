@@ -33,10 +33,10 @@ ActiveRecord::Schema.define(version: 20171107112011) do
     t.string "title", null: false
     t.string "overview", null: false
     t.string "release_date", null: false
-    t.integer "inventory", default: 0, null: false
+    t.string "inventory", default: "0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "available_inventory", default: 0, null: false
+    t.string "available_inventory", default: "0", null: false
   end
 
   create_table "rentals", force: :cascade do |t|
