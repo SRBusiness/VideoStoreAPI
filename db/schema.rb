@@ -10,32 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171107013032) do
+ActiveRecord::Schema.define(version: 20171107234434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "customers", force: :cascade do |t|
-    t.string "name"
-    t.string "registered_at"
-    t.string "address"
-    t.string "city"
-    t.string "state"
-    t.string "postal_code"
-    t.string "phone"
+    t.string "name", null: false
+    t.string "registered_at", null: false
+    t.string "address", null: false
+    t.string "city", null: false
+    t.string "state", null: false
+    t.string "postal_code", null: false
+    t.string "phone", null: false
     t.integer "movies_checked_out_count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "account_credit"
+    t.float "account_credit"
   end
 
   create_table "movies", force: :cascade do |t|
-    t.string "title"
-    t.string "overview"
-    t.string "release_date"
-    t.integer "inventory"
+    t.string "title", null: false
+    t.string "overview", null: false
+    t.string "release_date", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "inventory"
     t.integer "available_inventory"
   end
 
