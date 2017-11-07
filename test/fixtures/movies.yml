@@ -9,9 +9,11 @@ Jaws:
   overview: "An insatiable great white shark terrorizes the townspeople of Amity Island, The police chief, an oceanographer and a grizzled shark hunter seek to destroy the bloodthirsty beast."
   release_date: "1975-06-19"
   inventory: 6
+  available_inventory: 6
 
 Goonies:
   title: "Gonnies"
   overview: "test test test"
   release_date: "1979-06-19"
-  inventory: 5
+  inventory: 1
+  available_inventory: 1

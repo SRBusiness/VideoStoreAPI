@@ -3,7 +3,9 @@ Rails.application.routes.draw do
 
   resources :customers, only: [:index, :zomg]
   resources :movies, only: [:index, :show, :create]
-  resources :zomg, only: [:index]
+  # resources :zomg, only: [:index]
 
 
+  get '/check-out', to: 'rentals#check-out'
+  # get '/check-in', to: 'rentals#check-in'
 end
