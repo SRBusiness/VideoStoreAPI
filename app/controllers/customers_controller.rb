@@ -5,7 +5,7 @@ class CustomersController < ApplicationController
     customers = Customer.all
 
     render(
-      json: customers.as_json(only: [:id, :name, :registered_at, :postal_code, :phone, :movie_checked_out_count]),
+      json: customers.as_json(only: [:id, :name, :registered_at, :postal_code, :phone, :movies_checked_out_count]),
       status: :ok
     )
   end
