@@ -4,7 +4,7 @@ class RentalsController < ApplicationController
     # make sure movie is available
     # create instance of rental
     # decriment available_inventory for movie
-
+    
   end
 
   def checkin

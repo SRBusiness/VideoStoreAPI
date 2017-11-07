@@ -25,6 +25,14 @@ describe RentalsController do
         customer_id: Customer.first.id,
         due_date: "2017-11-19"
       }
+
+      before = Rental.count
+      post check_out_path, params: invalid_rental
+      Rental.count.must_equal before
+      must_respond_with :bad_request
+
+      body = JSON.parse(response.body)
+      body.must_equal "errors" => {"movie_id" => ["can't be blank"]}
     end
   end
 end
