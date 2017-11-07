@@ -73,19 +73,80 @@ describe MoviesController do
         release_date: "2018-10-10",
         inventory: "5"
       }
-      
+      count = Movie.count
       post movies_path, params: params
       must_respond_with :ok
+      Movie.count.must_equal count+1
     end
 
-    it "does not create movie with bad params" do
+    it "does not create movie with missing information" do
       params = {
+        overview: "awesome movie about awesome people",
         release_date: "2018-10-10",
         inventory: "5"
       }
+      count = Movie.count
 
       post movies_path, params: params
       must_respond_with :bad_request
+
+      body = JSON.parse(response.body)
+      body.must_equal "errors" => {"title" => ["can't be blank"]}
+
+      Movie.count.must_equal count
     end
+
+    # # These tests are repititive and unneccessary. They all test that if a movie is missing information that it doesn't create a new one. We only need one test to cover that in the controller. Testing at an attribute level like the ones you have written below is done in the movie model tests for our validations and we don't need to duplicate this work in the controller. - SRB 11/7/16 2:26pm
+
+    # it "does not create movie with no overview" do
+    #   params = {
+    #     title: "awesome movie 1",
+    #     release_date: "2018-10-10",
+    #     inventory: "5"
+    #   }
+    #   count = Movie.count
+    #
+    #   post movies_path, params: params
+    #   must_respond_with :bad_request
+    #
+    #   body = JSON.parse(response.body)
+    #   body.must_equal "errors" => {"overview" => ["can't be blank"]}
+    #
+    #   Movie.count.must_equal count
+    # end
+
+    # it "does not create movie with no release_date" do
+    #   params = {
+    #     title: "awesome movie 1",
+    #     overview: "awesome movie about awesome people",
+    #     inventory: "5"
+    #   }
+    #   count = Movie.count
+    #
+    #   post movies_path, params: params
+    #   must_respond_with :bad_request
+    #
+    #   body = JSON.parse(response.body)
+    #   body.must_equal "errors" => {"release_date" => ["can't be blank"]}
+    #
+    #   Movie.count.must_equal count
+    # end
+
+    # it "does not create movie with no inventory" do
+    #   params = {
+    #     title: "awesome movie 1",
+    #     overview: "awesome movie about awesome people",
+    #     release_date: "2018-10-10"
+    #   }
+    #
+    #   count = Movie.count
+    #   post movies_path, params: params
+    #   must_respond_with :bad_request
+    #
+    #   body = JSON.parse(response.body)
+    #   body.must_equal "errors" => {"inventory" => ["can't be blank"]}
+    #
+    #   Movie.count.must_equal count
+    # end
   end
 end
