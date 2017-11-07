@@ -86,10 +86,13 @@ describe MoviesController do
         inventory: "5"
       }
       count = Movie.count
+
       post movies_path, params: params
       must_respond_with :bad_request
+
       body = JSON.parse(response.body)
-      body["errors"]["title"].must_not_be nil
+      body.must_equal "errors" => {"title" => ["can't be blank"]}
+
       Movie.count.must_equal count
     end
 
@@ -100,10 +103,13 @@ describe MoviesController do
         inventory: "5"
       }
       count = Movie.count
+
       post movies_path, params: params
       must_respond_with :bad_request
+
       body = JSON.parse(response.body)
-      body["errors"]["overview"].must_not_be nil
+      body.must_equal "errors" => {"overview" => ["can't be blank"]}
+
       Movie.count.must_equal count
     end
 
@@ -114,10 +120,13 @@ describe MoviesController do
         inventory: "5"
       }
       count = Movie.count
+
       post movies_path, params: params
       must_respond_with :bad_request
+
       body = JSON.parse(response.body)
-      body["errors"]["release_date"].must_not_be nil
+      body.must_equal "errors" => {"release_date" => ["can't be blank"]}
+
       Movie.count.must_equal count
     end
 
@@ -127,11 +136,14 @@ describe MoviesController do
         overview: "awesome movie about awesome people",
         release_date: "2018-10-10"
       }
+
       count = Movie.count
       post movies_path, params: params
       must_respond_with :bad_request
+
       body = JSON.parse(response.body)
-      body["errors"]["inventory"].must_not_be nil
+      body.must_equal "errors" => {"inventory" => ["can't be blank"]}
+
       Movie.count.must_equal count
     end
   end
