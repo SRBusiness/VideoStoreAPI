@@ -30,7 +30,7 @@ describe Customer do
     it "can be created" do
       before = Customer.count
 
-      new_customer = Customer.new(name: "test", registered_at: "test", postal_code: "11111", phone: "(111) 111-1111")
+      new_customer = Customer.new(name: "test", registered_at: "test", postal_code: "11111", phone: "(111) 111-1111", address: "test", city: "test", state: "test")
 
       new_customer.must_be :valid?
       new_customer.save
@@ -53,7 +53,7 @@ describe Customer do
       customer1.wont_be :valid?
     end
 
-    it "will return false without a postal_code" do
+    it "will return false without a phone number" do
       customer1.phone = nil
       customer1.wont_be :valid?
     end
