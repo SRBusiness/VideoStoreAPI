@@ -6,6 +6,6 @@ Rails.application.routes.draw do
   # resources :zomg, only: [:index]
 
 
-  post '/check-out', to: 'rentals#check_out'
-  # post '/check-in', to: 'rentals#check-in'
+  post 'rentals/check-out', to: 'rentals#create', as: "check_out"
+  # post 'rentals/check-in', to: 'rentals#check-in'
 end

@@ -1,7 +1,7 @@
 class RentalsController < ApplicationController
   # before_action
 
-  def check_out
+  def create
     movie = Movie.find_by_id(params[:movie_id])
     customer = Customer.find_by_id( params[:customer_id])
 
