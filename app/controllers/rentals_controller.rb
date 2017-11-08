@@ -1,24 +1,21 @@
 class RentalsController < ApplicationController
-  def check_out
-    # make sure movie_id and customer_id exists
+  # before_action
 
-    customer = Customer.find_by(id: rental_params[:customer_id])
-    movie = Movie.find_by(id: rental_params[:movie_id])
-    binding.pry
-    if customer && movie && movie.available_inventory >= 1
-      rental = Rental.new(movie: movie, customer: customer, due_date: rental_params[:due_date])
-      rental.save
-      movie.available_inventory -= 1
-      movie.save
+  def check_out
+    find_movie_customer
+    rental = Rental.new(movie: @movie, customer: @customer, due_date: rental_params[:due_date])
+
+    if movie_rentable && rental.save
+      rent_movie
+      render(
+        # json: {id: movie.id},
+        status: :ok
+      )
     else
-      render json: {errors: movie.errors.messages},
+      # TODO: need to make checking to see if a movie is rentalable is part of the save process for rental
+      render json: {errors: rental.errors.messages},
       status: :bad_request
     end
-    # make sure movie is available
-    # create instance of rental
-    # decriment available_inventory for movie
-
-
   end
 
   def checkin
@@ -27,6 +24,24 @@ class RentalsController < ApplicationController
 private
   def rental_params
     params.permit(:movie_id, :customer_id, :due_date)
+  end
+
+  def find_movie_customer
+    @movie = Movie.find_by(id: rental_params[:movie_id])
+    @customer = Customer.find_by(id: rental_params[:customer_id])
+  end
+
+  def movie_rentable
+    if @movie
+      return @movie.can_rent
+    else
+      return false
+    end
+  end
+
+  def rent_movie
+    @movie.decriment_movie
+    @customer.increment_movie
   end
 
 end

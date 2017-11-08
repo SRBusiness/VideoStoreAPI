@@ -6,9 +6,19 @@ class Movie < ApplicationRecord
   validates :overview, presence: true
   validates :release_date, presence: true
   validates :inventory, presence: true
+  # TODO: make available_inventory not able to be less than zero
 
   # method that will set available_inventory to the value of inventory
   after_create :set_available_inventory
+
+  def can_rent
+    return self.available_inventory >= 1
+  end
+
+  def decriment_movie
+    self.available_inventory -= 1
+    self.save
+  end
 
 private
   def set_available_inventory

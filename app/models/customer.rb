@@ -8,4 +8,9 @@ class Customer < ApplicationRecord
   validates :registered_at, presence: true
   validates :postal_code, presence: true
   validates :phone, presence: true
+
+  def increment_movie
+    self.movies_checked_out_count += 1
+    self.save
+  end
 end
