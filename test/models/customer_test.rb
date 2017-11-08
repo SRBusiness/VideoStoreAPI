@@ -58,4 +58,14 @@ describe Customer do
       customer1.wont_be :valid?
     end
   end
+
+  describe "custom methods" do
+    describe "increment_movie" do
+      it "will increase movies_checked_out_count by one" do
+        before = customer1.movies_checked_out_count
+        customer1.increment_movie
+        customer1.movies_checked_out_count.must_equal before + 1
+      end
+    end
+  end
 end

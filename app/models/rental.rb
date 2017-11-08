@@ -5,7 +5,5 @@ class Rental < ApplicationRecord
 
   # validations
   validates :due_date, presence: true
-  # don't need to validate that rentals are unique, a customer could check out the same movie on numerouse occasions
-
-  
+  # don't need to validate that rentals are unique, a customer could check out the same movie on numerouse occasions  
 end
