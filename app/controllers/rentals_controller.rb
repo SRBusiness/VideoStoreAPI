@@ -25,23 +25,27 @@ class RentalsController < ApplicationController
       status: :bad_request
     end
   end
-  #
-  # def update
-  #   rental = Rental.find_by(movie: params[:movie_id], customer: params[:customer_id] )
-  #
-  #   # if we can find rental, if the rental is not already renturned
-  #   if rental && rental.renturned
-  #     rental.update(returned: true)
-  #     rental.save
-  #     render(
-  #       json: {id: movie.id},
-  #       status: :ok
-  #     )
-  #
-  #   else
-  #
-  #   end
-  # end
+
+  def update
+    rental = Rental.find_by(movie: params[:movie_id], customer: params[:customer_id] )
+
+    # if we can find rental, if the rental is not already renturned
+    if rental
+      if rental.returned
+        render json: {errors: {movie_id: "Movie ID: #{rental_params[:movie_id]} was already returned"} },
+        status: :bad_request
+      else
+        rental.update(returned: true)
+        render(
+          json: {id: params[:movie_id]},
+          status: :ok
+        )
+      end
+    else
+      render json: {errors: "Rental does not exist."},
+      status: :bad_request
+    end
+  end
 
 private
   def rental_params

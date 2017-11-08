@@ -11,8 +11,8 @@ describe RentalsController do
 
   let(:check_in) {
     {
-      movie_id: Rental.first.movie_id,
-      customer_id: Rental.first.customer_id
+      movie_id: Rental.last.movie_id,
+      customer_id: Rental.last.customer_id
     }
   }
 
@@ -78,13 +78,57 @@ describe RentalsController do
     end
   end
 
-  # describe "check-in" do
-  #   it "will check in a movie" do
-  #     post check_in_path, params: check_in
-  #   end
-  #
-  #   it "won't change the db if data is missing" do
-  #
-  #   end
-  # end
+  describe "check-in" do
+    it "will check in a movie" do
+      # arrange
+      post check_out_path, params: rental
+      Rental.last.returned.must_equal false
+      before = Rental.where(returned: false).length
+
+      # act
+      post check_in_path, params: check_in
+
+      # assert
+      Rental.last.returned.must_equal true
+      must_respond_with :ok
+      Rental.where(returned: false).length.must_equal before - 1
+    end
+
+    it "won't change the db if data is missing" do
+      # arrange
+      post check_out_path, params: rental
+      Rental.last.returned.must_equal false
+      before = Rental.where(returned: false).length
+
+      # act
+      post check_in_path, params: {movie_id: Rental.last.movie_id}
+
+      # assert
+      Rental.last.returned.must_equal false
+      Rental.where(returned: false).length.must_equal before
+      must_respond_with :bad_request
+
+      body = JSON.parse(response.body)
+      body.must_equal "errors" => "Rental does not exist."
+    end
+
+    it "won't change the db if the movie has already been returned and will send you an error message alerting you" do
+      # arrange
+      post check_out_path, params: rental
+      post check_in_path, params: check_in
+      Rental.last.returned.must_equal true
+      before = Rental.where(returned: false).length
+
+      # act
+      post check_in_path, params: check_in
+
+      # assert
+      Rental.last.returned.must_equal true
+      Rental.where(returned: false).length.must_equal before
+      must_respond_with :bad_request
+
+      body = JSON.parse(response.body)
+      body.must_equal "errors" => {"movie_id" => "Movie ID: #{rental[:movie_id]} was already returned"}
+    end
+  end
 end
