@@ -80,18 +80,24 @@ describe RentalsController do
 
   describe "check-in" do
     it "will check in a movie" do
-      # arrange
+      # # arrange
       post check_out_path, params: rental
+
+      before_movies_rented = Customer.find(rental[:customer_id]).movies_checked_out_count
       Rental.last.returned.must_equal false
       before = Rental.where(returned: false).length
+      before_movie = Movie.find(rental[:movie_id]).available_inventory
 
       # act
       post check_in_path, params: check_in
 
       # assert
+      Customer.find(rental[:customer_id]).movies_checked_out_count.must_equal before_movies_rented - 1
+      Movie.find(rental[:movie_id]).available_inventory.must_equal before_movie + 1
       Rental.last.returned.must_equal true
-      must_respond_with :ok
       Rental.where(returned: false).length.must_equal before - 1
+
+      must_respond_with :ok
     end
 
     it "won't change the db if data is missing" do
