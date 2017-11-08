@@ -26,7 +26,12 @@ class RentalsController < ApplicationController
     end
   end
 
-  def checkin
+  def update
+    rental = Rental.find_by(movie: params[:movie_id], customer: params[:customer_id] )
+
+    binding.pry
+    # find movie and customer
+    #
   end
 
 private

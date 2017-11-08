@@ -1,14 +1,22 @@
 require "test_helper"
 
 describe RentalsController do
-  describe "check_out" do
-    let(:rental) {
-      {
-        movie_id: Movie.first.id,
-        customer_id: Customer.first.id,
-        due_date: "2017-11-19"
-      }
+  let(:rental) {
+    {
+      movie_id: Movie.first.id,
+      customer_id: Customer.first.id,
+      due_date: "2017-11-19"
     }
+  }
+
+  let(:check_in) {
+    {
+      movie_id: Rental.first.movie_id,
+      customer_id: Rental.first.customer_id
+    }
+  }
+
+  describe "check_out" do
     it "checks out a movie" do
       # arrange
       before_rental = Rental.count
@@ -27,8 +35,6 @@ describe RentalsController do
       Movie.find(rental[:movie_id]).available_inventory.must_equal before_movie - 1
       # incremented movies_checked_out_count
       Customer.find(rental[:customer_id]).movies_checked_out_count.must_equal before_movies_rented + 1
-
-      # binding.pry
     end
 
     it "won't change the db if data is missing" do
@@ -54,19 +60,31 @@ describe RentalsController do
     end
 
     it "will return bad request if that movie is unavailable" do
-      # binding.pry
-      post check_out_path, params: rental
-      before_rental = Rental.count
-      before_movie = Movie.find(rental[:movie_id]).available_inventory
-      before_movie.must_equal 0
+      # arrange
+      before = Rental.count
+      movie = Movie.find(rental[:movie_id])
+      movie.update(available_inventory: 0)
 
+      # act
       post check_out_path, params: rental
 
+      # assert
       must_respond_with :bad_request
 
-      body = JSON.parse(response.body)
+      Rental.count.must_equal before
 
+      body = JSON.parse(response.body)
       body.must_equal "errors" => {"movie_id" => "Movie ID: #{rental[:movie_id]} is out of stock and cannot be rented right now. Please try again later"}
+    end
+  end
+
+  describe "check-in" do
+    it "will check in a movie" do
+      post check_in_path, params: check_in
+    end
+
+    it "won't change the db if data is missing" do
+
     end
   end
 end
