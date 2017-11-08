@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171107234434) do
+ActiveRecord::Schema.define(version: 20171108053751) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(version: 20171107234434) do
     t.string "due_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "checkout_date"
+    t.boolean "returned", default: false
     t.index ["movie_id", "customer_id"], name: "index_rentals_on_movie_id_and_customer_id"
   end
 

@@ -59,4 +59,15 @@ describe Rental do
       rental.errors.messages.must_include :due_date
     end
   end
+
+  describe "custom methods" do
+    describe "set_checkout_date" do
+      it "will set checkout_date to todays today automatically after save" do
+        rental = Rental.new(movie: movie, customer: customer, due_date: date_one)
+        rental.checkout_date.must_be_nil
+        rental.save
+        rental.checkout_date.must_equal Date.today
+      end
+    end
+  end
 end
