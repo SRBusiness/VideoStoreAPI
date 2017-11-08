@@ -60,12 +60,13 @@ describe Customer do
   end
 
   describe "custom methods" do
-    describe "increment_movie" do
-      it "will increase movies_checked_out_count by one" do
+    describe "update_customer_movies" do
+      it "will increase movies_checked_out_count by the amount passed in" do
         before = customer1.movies_checked_out_count
-        customer1.increment_movie
+        customer1.update_customer_movies(1)
         customer1.movies_checked_out_count.must_equal before + 1
       end
+      # TODO: write edge case method for this
     end
   end
 end

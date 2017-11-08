@@ -80,12 +80,13 @@ describe Movie do
       end
     end
 
-    describe "decriment_movie" do
-      it "will decrease the available_inventory by one" do
+    describe "update_available_inventory" do
+      it "will decrease the available_inventory by the numbers passed into the method" do
         before = @movie1.available_inventory
-        @movie1.decriment_movie
+        @movie1.update_available_inventory(-1)
         @movie1.available_inventory.must_equal before - 1
       end
+      # TODO: write edge case method for this
     end
   end
 end

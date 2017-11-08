@@ -14,8 +14,8 @@ class Movie < ApplicationRecord
     return self.available_inventory >= 1
   end
 
-  def decriment_movie
-    self.available_inventory -= 1
+  def update_available_inventory(change)
+    self.available_inventory = self.available_inventory + change
     self.save
   end
 

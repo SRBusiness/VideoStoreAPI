@@ -78,13 +78,13 @@ describe RentalsController do
     end
   end
 
-  describe "check-in" do
-    it "will check in a movie" do
-      post check_in_path, params: check_in
-    end
-
-    it "won't change the db if data is missing" do
-
-    end
-  end
+  # describe "check-in" do
+  #   it "will check in a movie" do
+  #     post check_in_path, params: check_in
+  #   end
+  #
+  #   it "won't change the db if data is missing" do
+  #
+  #   end
+  # end
 end

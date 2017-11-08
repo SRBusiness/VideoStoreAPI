@@ -10,8 +10,8 @@ class RentalsController < ApplicationController
     if rental.valid?
       if movie.can_rent
         rental.save
-        movie.decriment_movie
-        customer.increment_movie
+        movie.update_available_inventory(-1)
+        customer.update_customer_movies(1)
         render(
           json: {id: movie.id},
           status: :ok
@@ -25,14 +25,23 @@ class RentalsController < ApplicationController
       status: :bad_request
     end
   end
-
-  def update
-    rental = Rental.find_by(movie: params[:movie_id], customer: params[:customer_id] )
-
-    binding.pry
-    # find movie and customer
-    #
-  end
+  #
+  # def update
+  #   rental = Rental.find_by(movie: params[:movie_id], customer: params[:customer_id] )
+  #
+  #   # if we can find rental, if the rental is not already renturned
+  #   if rental && rental.renturned
+  #     rental.update(returned: true)
+  #     rental.save
+  #     render(
+  #       json: {id: movie.id},
+  #       status: :ok
+  #     )
+  #
+  #   else
+  #
+  #   end
+  # end
 
 private
   def rental_params
