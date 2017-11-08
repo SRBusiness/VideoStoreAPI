@@ -68,5 +68,24 @@ describe Movie do
         @movie3.available_inventory.must_equal inventory
       end
     end
+
+    describe "can_rent" do
+      it "will return true if there is enough inventory to rent" do
+        @movie2.can_rent.must_equal true
+      end
+
+      it "will return false if there is not enough inventory to rent" do
+        @movie2.available_inventory = 0
+        @movie2.can_rent.must_equal false
+      end
+    end
+
+    describe "decriment_movie" do
+      it "will decrease the available_inventory by one" do
+        before = @movie1.available_inventory
+        @movie1.decriment_movie
+        @movie1.available_inventory.must_equal before - 1
+      end
+    end
   end
 end
