@@ -27,6 +27,8 @@ describe RentalsController do
       Movie.find(rental[:movie_id]).available_inventory.must_equal before_movie - 1
       # incremented movies_checked_out_count
       Customer.find(rental[:customer_id]).movies_checked_out_count.must_equal before_movies_rented + 1
+
+      # binding.pry
     end
 
     it "won't change the db if data is missing" do
@@ -48,7 +50,23 @@ describe RentalsController do
       Customer.find(invalid_rental[:customer_id]).movies_checked_out_count.must_equal before_movies_rented
 
       body = JSON.parse(response.body)
-      body.must_equal "errors" => {"movie_id" => ["can't be blank"]}
+      body.must_equal "errors" => {"movie" => ["must exist"]}
+    end
+
+    it "will return bad request if that movie is unavailable" do
+      # binding.pry
+      post check_out_path, params: rental
+      before_rental = Rental.count
+      before_movie = Movie.find(rental[:movie_id]).available_inventory
+      before_movie.must_equal 0
+
+      post check_out_path, params: rental
+
+      must_respond_with :bad_request
+
+      body = JSON.parse(response.body)
+
+      body.must_equal "errors" => {"movie_id" => "Movie ID: #{rental[:movie_id]} is out of stock and cannot be rented right now. Please try again later"}
     end
   end
 end
